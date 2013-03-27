@@ -10,7 +10,7 @@ set -e
 # are currently messed up as of early 2011
 WGET_OPTS=${WGET_OPTS:---no-check-certificate}
 
-ANT_VERSION="1.8.4"
+ANT_VERSION="1.9.0"
 ANT_TARBALL="apache-ant-${ANT_VERSION}-bin.tar.gz"
 ANT_TARBALL_URL="http://www.gtlib.gatech.edu/pub/apache/ant/binaries/${ANT_TARBALL}"
 
@@ -148,7 +148,9 @@ PACKAGER_EMAIL=${PACKAGER_EMAIL:-$USER@$HOST}
 
 # The hadoop home that the packages will eventually install into
 # TODO(todd) this is currently only used by rpms, I believe
-HADOOP_HOME=${HADOOP_HOME:-/usr/lib/hadoop-0.20}
+HADOOP_HOME=${HADOOP_HOME:-/usr/lib/hadoop}
+# Hadoop home for mapreduce when you are using cdh4 and mrv1
+HADOOP_HOME_MAPRED=${HADOOP_HOME_MAPRED:-/usr/lib/hadoop-0.20-mapreduce}
 ##############################
 # End configurables
 ##############################
@@ -212,6 +214,7 @@ sed "
  s,@PACKAGER@,$PACKAGER,g;
  s,@PACKAGER_EMAIL@,$PACKAGER_EMAIL,g;
  s,@HADOOP_HOME@,$HADOOP_HOME,g;
+ s,@HADOOP_HOME_MAPRED@,$HADOOP_HOME_MAPRED,g;
 "
 }
 

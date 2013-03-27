@@ -13,6 +13,7 @@ Requires: lzo
 %define _use_internal_dependency_generator 0
 
 %define hadoop_home @HADOOP_HOME@
+%define hadoop_home_mapred @HADOOP_HOME_MAPRED@
 
 %description
 GPLed Compression Libraries for Hadoop, built at $DATE on $HOST
@@ -37,10 +38,13 @@ chmod +x %{__find_requires}
 ant -Dname=%{name} -Dversion=%{version} compile-native package
 
 %install
-mkdir -p $RPM_BUILD_ROOT/%{hadoop_home}/lib
+mkdir -p $RPM_BUILD_ROOT/%{hadoop_home}/lib/native
+mkdir -p $RPM_BUILD_ROOT/%{hadoop_home_mapred}/lib/native
 install -m644 $RPM_BUILD_DIR/%{name}-%{version}/build/%{name}-%{version}.jar $RPM_BUILD_ROOT/%{hadoop_home}/lib/
-rsync -av --no-t $RPM_BUILD_DIR/%{name}-%{version}/build/%{name}-%{version}/lib/native/ $RPM_BUILD_ROOT/%{hadoop_home}/lib/native/
+rsync -av --no-t $RPM_BUILD_DIR/%{name}-%{version}/build/%{name}-%{version}/lib/native/*/* $RPM_BUILD_ROOT/%{hadoop_home}/lib/native/
+install -m644 $RPM_BUILD_DIR/%{name}-%{version}/build/%{name}-%{version}.jar $RPM_BUILD_ROOT/%{hadoop_home_mapred}/lib/
 
 %files
 %{hadoop_home}/lib/%{name}-%{version}.jar
 %{hadoop_home}/lib/native/
+%{hadoop_home_mapred}/lib/%{name}-%{version}.jar
